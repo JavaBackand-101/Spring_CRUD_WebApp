@@ -1,35 +1,43 @@
 package web.service;
 
-import models.Car;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import web.Dao.CarDAO;
+import web.models.Car;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.transaction.Transactional;
 
 @Service
 public class CarServiceImp implements CarService {
 
-    private final List<Car> cars;
+    private CarDAO carDAO;
 
-    public CarServiceImp() {
-        cars = new ArrayList<>(List.of(
-                new Car("Mercedec", "Black", 2003),
-                new Car("Lexus", "White", 2021),
-                new Car("BMW", "Black", 2020),
-                new Car("Lada", "White", 2008),
-                new Car("Toyota", "Black", 2009)
-        ));
+    @Autowired
+    public CarServiceImp(CarDAO carDAO) {
+        this.carDAO = carDAO;
+    }
+
+
+    @Transactional
+    @Override
+    public void add(Car car) {
+        carDAO.add(car);
+    }
+
+    @Transactional
+    @Override
+    public void update(Car car) {
+        carDAO.update(car);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Car car) {
+        carDAO.delete(car);
     }
 
 
 
-    public List<Car> getCars(int id) {
-        if(id > cars.size()){
-            return new ArrayList<>(cars);
-        }
-        return new ArrayList<>(cars.subList(0, id));
-    }
 
 }
